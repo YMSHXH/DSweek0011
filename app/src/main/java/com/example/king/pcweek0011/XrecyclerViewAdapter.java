@@ -19,6 +19,7 @@ public class XrecyclerViewAdapter extends XRecyclerView.Adapter<XrecyclerViewAda
 
     private Context context;
     private List<ProductBean.DataBean> list;
+    private ItemListener itemListener;
 
     public XrecyclerViewAdapter(Context context) {
         this.context = context;
@@ -56,7 +57,7 @@ public class XrecyclerViewAdapter extends XRecyclerView.Adapter<XrecyclerViewAda
     }
 
     @Override
-    public void onBindViewHolder(@NonNull XrecyclerViewVH xrecyclerViewVH, int i) {
+    public void onBindViewHolder(@NonNull final XrecyclerViewVH xrecyclerViewVH, int i) {
 
         ProductBean.DataBean dataBean = list.get(i);
 
@@ -70,6 +71,26 @@ public class XrecyclerViewAdapter extends XRecyclerView.Adapter<XrecyclerViewAda
         } else {
             xrecyclerViewVH.iv_productIcon.setImageResource(R.drawable.ic_launcher_background);
         }
+
+        //条目点击
+        xrecyclerViewVH.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (itemListener != null){
+                    itemListener.onItemClickListener(xrecyclerViewVH.getLayoutPosition(),xrecyclerViewVH.itemView);
+                }
+            }
+        });
+        //条目长按
+        xrecyclerViewVH.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                if (itemListener != null){
+                    itemListener.onLongItemClickListener(xrecyclerViewVH.getLayoutPosition(),xrecyclerViewVH.itemView);
+                }
+                return false;
+            }
+        });
 
     }
 
@@ -87,4 +108,20 @@ public class XrecyclerViewAdapter extends XRecyclerView.Adapter<XrecyclerViewAda
             this.tv_title = itemView.findViewById(R.id.tv_title);
         }
     }
+
+    /**
+     * 点击事件的方法
+     */
+    public void setItemListener(ItemListener itemListener){
+        this.itemListener = itemListener;
+    }
+
+    /**
+     * 设置点击事件
+     */
+    public interface ItemListener{
+        void onItemClickListener(int postion, View view);
+        void onLongItemClickListener(int postion, View view);
+    }
+
 }

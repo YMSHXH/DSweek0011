@@ -25,9 +25,6 @@ public class MainActivity extends AppCompatActivity implements ProductContact.IP
 
     private int page = 1;
     private EditText mEdProductName;
-    /**
-     * 查询
-     */
     private Button mBtnFind;
     private XRecyclerView mXRecyclerView;
     private ProductPresenter productPresenter;
@@ -52,6 +49,18 @@ public class MainActivity extends AppCompatActivity implements ProductContact.IP
         params = new HashMap<>();
         productName = "手机";
         toLogin(productName,page);
+
+        xrecyclerViewAdapter.setItemListener(new XrecyclerViewAdapter.ItemListener() {
+            @Override
+            public void onItemClickListener(int postion, View view) {
+                Toast.makeText(MainActivity.this,"点击"+postion,Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onLongItemClickListener(int postion, View view) {
+                Toast.makeText(MainActivity.this,"长按"+postion,Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void toLogin(String name, int page) {

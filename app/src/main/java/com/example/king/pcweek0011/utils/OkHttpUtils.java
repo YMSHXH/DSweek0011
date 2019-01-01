@@ -15,6 +15,7 @@ import okhttp3.FormBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
 
 public class OkHttpUtils {
 
@@ -26,8 +27,14 @@ public class OkHttpUtils {
     private final Handler handler;
 
     private OkHttpUtils() {
+        //定义拦截器
+        HttpLoggingInterceptor httpLoggingInterceptor = new HttpLoggingInterceptor();
+        httpLoggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+
         handler = new Handler();
         okHttpClient = new OkHttpClient.Builder()
+                //设置拦截器
+                .addInterceptor(httpLoggingInterceptor)
                 .connectTimeout(5,TimeUnit.SECONDS)
                 .readTimeout(5,TimeUnit.SECONDS)
                 .writeTimeout(5,TimeUnit.SECONDS)
